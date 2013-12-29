@@ -347,7 +347,13 @@ class Request
     {
         $method = isset($this->env['slim.method_override.original_method']) ? $this->env['slim.method_override.original_method'] : $this->getMethod();
 
-        return ($method === self::METHOD_POST && is_null($this->getContentType())) || in_array($this->getMediaType(), self::$formDataMediaTypes);
+        $formMethods = array(
+            self::METHOD_POST,
+            self::METHOD_PUT,
+            self::METHOD_PATCH,
+        );
+
+        return (in_array($method, $formMethods) && is_null($this->getContentType())) || in_array($this->getMediaType(), self::$formDataMediaTypes);
     }
 
     /**
